@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TodoManager — Локальний застосунок завдань</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 32px 16px; color: #222; }
+    .card { max-width: 480px; margin: 0 auto; background: #fff; border-radius: 8px; padding: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    h1 { margin: 0 0 16px; font-size: 28px; color: #b83f45; text-align: center; }
+    .row { display: flex; gap: 8px; }
+    input[type="text"] { flex: 1; padding: 10px 12px; font-size: 15px; border: 1px solid #ccc; border-radius: 4px; }
+    button.add-btn { padding: 10px 16px; font-size: 15px; background: #1f4e79; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+    .error { color: #c62828; font-size: 13px; margin-top: 8px; display: none; }
+    ul { list-style: none; padding: 0; margin: 16px 0; }
+    li { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-bottom: 1px solid #eee; }
+    li.completed span { text-decoration: line-through; color: #888; }
+    .meta { font-size: 14px; color: #555; text-align: right; }
+    .del-btn { background: transparent; border: none; color: #c62828; font-size: 18px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <section class="card" id="taskAppCard">
+    <h1 id="appHeading">TodoManager</h1>
+    <form id="taskForm" class="row" novalidate>
+      <input id="newTaskInput" type="text" placeholder="Що потрібно зробити?" />
+      <button id="addTaskBtn" class="add-btn" type="submit">Додати</button>
+    </form>
+    <p id="validationError" class="error">Назва завдання не може бути порожньою!</p>
+    <ul id="taskList"></ul>
+    <div id="tasksCounter" class="meta">Активних завдань: 0</div>
+  </section>
+  <script>
+    const form = document.getElementById('taskForm');
+    const input = document.getElementById('newTaskInput');
+    const err = document.getElementById('validationError');
+    const list = document.getElementById('taskList');
+    const counter = document.getElementById('tasksCounter');
+
+    function updateCounter() {
+      const active = list.querySelectorAll('li:not(.completed)').length;
+      counter.textContent = `Активних завдань: ${active}`;
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) {
+        err.style.display = 'block';
+        return;
+      }
+      err.style.display = 'none';
+      const li = document.createElement('li');
+      const label = document.createElement('span');
+      label.textContent = text;
+      label.style.cursor = 'pointer';
+      label.addEventListener('click', () => {
+        li.classList.toggle('completed');
+        updateCounter();
+      });
+      const delBtn = document.createElement('button');
+      delBtn.className = 'del-btn';
+      delBtn.textContent = '×';
+      delBtn.addEventListener('click', () => {
+        li.remove();
+        updateCounter();
+      });
+      li.append(label, delBtn);
+      list.appendChild(li);
+      input.value = '';
+      updateCounter();
+    });
+  </script>
+</body>
+</html>

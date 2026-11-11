@@ -1,0 +1,21 @@
+{
+  "name": "e2e-screenshot-tests",
+  "version": "1.0.0",
+  "description": "Лабораторна робота №6 — E2E та Screenshot тестування за допомогою Playwright",
+  "scripts": {
+    "test": "playwright test",
+    "start": "http-server -p 3000"
+  },
+  "keywords": [
+    "playwright",
+    "e2e",
+    "screenshot-testing",
+    "visual-regression"
+  ],
+  "author": "Ruslan Dragan",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "http-server": "^14.1.1"
+  }
+}
